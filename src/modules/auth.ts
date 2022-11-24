@@ -25,9 +25,14 @@ const protect = (req, res, next) => {
     }
 
     try {
-        
+        // @ts-ignore
+        const user = jwt.verify(token, process.env.JWT_SECRET)
+        req.user = user
+        next()
     }catch (E){
-
+        res.status(401)
+        res.json({ message: "not authorized" })
+        return 
     }
 }
 
